@@ -44,6 +44,7 @@
         priv.rotate = function (direction, duration,callback) {
 
                   if(duration <= 0){
+                        $(priv.options.id).trigger( "indexChanged", priv.index );
                         callback();
                         return;
                   }
@@ -62,15 +63,22 @@
 
 
         priv.rotateL = function (callback) {
-                  if(priv.index<=2){
-                  callback();
-                  return;
+
+                  var html = "";
+                  if(priv.index<=0){
+                        callback();
+                        return;
                   }
+
+                  if(priv.index>2){
+                        html = priv.options.list[priv.index-3].html
+                  }
+
                   var last = $(priv.options.id+" .flip-container").last();
                   last.css('padding', '0 -5px' ).css('width', 0 ).children().css('transform', 'rotateY(-90deg)');//.after(function(){});
 
                   //Update data
-                  priv.nextViewL.find('.front').html(priv.options.list[priv.index-3].html);
+                  priv.nextViewL.find('.front').html(html);
                   priv.index -=1
 
                   $(priv.options.id).prepend(priv.nextViewL);
@@ -92,16 +100,20 @@
 
         priv.rotateR = function (callback) {
 
-                  if(priv.index>=(priv.options.list.length-3)){
-                  callback();
-                  return;
+                  var html = "";
+                  if(priv.index>=(priv.options.list.length-1)){
+                        callback();
+                        return;
+                  }
+                  if(priv.index<(priv.options.list.length-3)){
+                        html = priv.options.list[(priv.index+3)].html
                   }
 
                   var first = $(priv.options.id+" .flip-container").first();
                   first.css('width', 0 ).children().css('transform', 'rotateY(90deg)');//.after(function(){});
 
                   //Update data
-                  priv.nextViewR.find('.front').html(priv.options.list[(priv.index+3)].html);
+                  priv.nextViewR.find('.front').html(html);
                   priv.index +=1
 
                   $(priv.options.id).append(priv.nextViewR);
@@ -125,21 +137,14 @@
 
         }
 
-
-/*-------- PUBLIC METHODS ----------------------------------------------------------*/
-        Gallery.rotate = function (direction,callback) {
-
-                    priv.rotate(direction, 1,callback)
-        }
-
-        Gallery.rotateFast = function (direction, duration,callback) {
+        priv.rotateFast = function (direction, duration,callback) {
                   if(duration > 0){
                     var tmp = priv.options.speed;
                     priv.options.speed = 100;
                     $(priv.options.id+" .flip-container").addClass('fast').children().addClass('fast');
                     priv.nextViewL.addClass('fast').children().addClass('fast');
                     priv.nextViewR.addClass('fast').children().addClass('fast');
-                    var result = priv.rotate(direction, duration,function(){
+                    priv.rotate(direction, duration,function(){
                         $(priv.options.id+" .flip-container").removeClass('fast').children().removeClass('fast');
                         priv.nextViewL.removeClass('fast').children().removeClass('fast');
                         priv.nextViewR.removeClass('fast').children().removeClass('fast');
@@ -147,6 +152,16 @@
                         callback();
                     });
                   }
+        }
+/*-------- PUBLIC METHODS ----------------------------------------------------------*/
+        Gallery.rotate = function (direction,callback) {
+                    priv.rotate(direction, 1,callback)
+        }
+
+        Gallery.JumpTo = function (index){
+            var direction = index < priv.index ? 'left' : 'right';
+            var duration = Math.abs(priv.index-index);
+            priv.rotateFast(direction,duration,function(){})
         }
 
         Gallery.init = function(options){

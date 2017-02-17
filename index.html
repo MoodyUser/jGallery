@@ -41,6 +41,9 @@ jQuery(document).ready( function()
                 ]
 
        });
+       $( "#blog-gallery" ).on( "indexChanged", function( event, index ) {
+            console.log(index);
+       });
 });
     </script>
 </head>
