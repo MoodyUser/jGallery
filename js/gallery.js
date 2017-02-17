@@ -6,6 +6,7 @@
  *
  */
 
+
 !function(exports, $, undefined)
 {
 
@@ -24,7 +25,8 @@
             name : '',
             url : '',
             speed : 600,
-            template :  '<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'
+            render : function(value){ return "<div class='flip-container'><div class='flipper'><div class='front'>"+
+               value+"<div class='back'></div></div></div>";}
     },
     widths = [0,100,300,320,300,160,0],
     active = false;
@@ -60,9 +62,17 @@
 
 
         priv.rotateL = function (callback) {
-
+                  if(priv.index<=2){
+                  callback();
+                  return;
+                  }
                   var last = $(priv.options.id+" .flip-container").last();
                   last.css('padding', '0 -5px' ).css('width', 0 ).children().css('transform', 'rotateY(-90deg)');//.after(function(){});
+
+                  //Update data
+                  priv.nextViewL.find('.front').html(priv.options.list[priv.index-3].html);
+                  priv.index -=1
+
                   $(priv.options.id).prepend(priv.nextViewL);
                   //last.delay(2000).detach();
                   priv.nextViewL = last;
@@ -81,8 +91,19 @@
         }
 
         priv.rotateR = function (callback) {
+
+                  if(priv.index>=(priv.options.list.length-3)){
+                  callback();
+                  return;
+                  }
+
                   var first = $(priv.options.id+" .flip-container").first();
                   first.css('width', 0 ).children().css('transform', 'rotateY(90deg)');//.after(function(){});
+
+                  //Update data
+                  priv.nextViewR.find('.front').html(priv.options.list[(priv.index+3)].html);
+                  priv.index +=1
+
                   $(priv.options.id).append(priv.nextViewR);
                   //last.delay(2000).detach();
                   var prev = priv.nextViewR;
@@ -131,9 +152,9 @@
         Gallery.init = function(options){
                $.extend(priv.options, defaults, options);
                priv.options.id =  "#" + priv.options.id;
-               priv.template = "<div class='flip-container'><div class='flipper'><div class='front'>"+priv.options.template+"<div class='back'></div></div></div>";
+               priv.index = 2;
                for(var i=0; i<5;i++){
-                    $(priv.options.id).append(priv.template);
+                    $(priv.options.id).append(priv.options.render(priv.options.list[i].html));
                }
                var items = $(priv.options.id+" .flip-container");
                var s = (priv.options.speed/1000);
@@ -176,3 +197,4 @@
     exports.Gallery = Gallery;
 
 }(this, jQuery);
+

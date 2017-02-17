@@ -20,22 +20,27 @@
     <script>
 jQuery(document).ready( function()
 {
-    console.log('doc rdy');
+       var myGallery1 = new Gallery;
+       myGallery1.init({
+       /* custom options */
+           id : 'blog-gallery',
+           list:[
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img3.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img4.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img2.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img3.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img3.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img2.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                {html:'<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'},
+                ]
 
-    // EXAMPLE OF CREATING PLUGIN OBJECTS WITH CUSTOM SETTINGS
-
-    console.log('--------------------------------------------');
-
-    var myGallery1 = new Gallery;
-    myGallery1.init(
-    {
-        /* custom options */
-        id : 'blog-gallery',
-
-    });
-
-    // console.log('--------------------------------------------');
-
+       });
 });
     </script>
 </head>
