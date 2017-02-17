@@ -23,6 +23,7 @@
             id : '',
             name : '',
             url : '',
+            speed : 600,
             template :  '<img src="assets/img1.jpg" width="300px">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book... <button class="btn btn-info"> Read More</button>'
     },
     widths = [0,100,300,320,300,160,0],
@@ -38,9 +39,27 @@
             return widths[index+1];
         }
 
-        /*-------- PUBLIC METHODS ----------------------------------------------------------*/
+        priv.rotate = function (direction, duration,callback) {
 
-        Gallery.rotateL = function (callback) {
+                  if(duration <= 0){
+                        callback();
+                        return;
+                  }
+                  if(direction=='right'){
+                         priv.rotateR(function(){
+                         priv.rotate(direction, duration-1,callback)
+                         });
+                  }
+                  if(direction=='left'){
+                         priv.rotateL(function(){
+                         priv.rotate(direction, duration-1,callback)
+                         });
+                  }
+
+        }
+
+
+        priv.rotateL = function (callback) {
 
                   var last = $(priv.options.id+" .flip-container").last();
                   last.css('padding', '0 -5px' ).css('width', 0 ).children().css('transform', 'rotateY(-90deg)');//.after(function(){});
@@ -57,12 +76,11 @@
                                priv.nextViewL.detach();
                                priv.nextViewL.css('padding', '0 -5px' ).css('width', 0 ).children().css('transform', 'rotateY(90deg)');
                                callback();
-                   },800);
+                   },priv.options.speed);
 
         }
 
-        Gallery.rotateR = function (callback) {
-
+        priv.rotateR = function (callback) {
                   var first = $(priv.options.id+" .flip-container").first();
                   first.css('width', 0 ).children().css('transform', 'rotateY(90deg)');//.after(function(){});
                   $(priv.options.id).append(priv.nextViewR);
@@ -82,25 +100,53 @@
                                priv.nextViewR.detach();
                                priv.nextViewR.css('width', 0 ).children().css('transform', 'rotateY(-90deg)');
                                callback();
-                  },800);
+                  },priv.options.speed);
 
-}
+        }
+
+
+/*-------- PUBLIC METHODS ----------------------------------------------------------*/
+        Gallery.rotate = function (direction,callback) {
+
+                    priv.rotate(direction, 1,callback)
+        }
+
+        Gallery.rotateFast = function (direction, duration,callback) {
+                  if(duration > 0){
+                    var tmp = priv.options.speed;
+                    priv.options.speed = 100;
+                    $(priv.options.id+" .flip-container").addClass('fast').children().addClass('fast');
+                    priv.nextViewL.addClass('fast').children().addClass('fast');
+                    priv.nextViewR.addClass('fast').children().addClass('fast');
+                    var result = priv.rotate(direction, duration,function(){
+                        $(priv.options.id+" .flip-container").removeClass('fast').children().removeClass('fast');
+                        priv.nextViewL.removeClass('fast').children().removeClass('fast');
+                        priv.nextViewR.removeClass('fast').children().removeClass('fast');
+                        priv.options.speed = tmp;
+                        callback();
+                    });
+                  }
+        }
 
         Gallery.init = function(options){
                $.extend(priv.options, defaults, options);
                priv.options.id =  "#" + priv.options.id;
                priv.template = "<div class='flip-container'><div class='flipper'><div class='front'>"+priv.options.template+"<div class='back'></div></div></div>";
                for(var i=0; i<5;i++){
-                    $(priv.options.id).append(priv.template)
+                    $(priv.options.id).append(priv.template);
                }
-               priv.nextViewL = $(priv.options.id+" .flip-container").first().clone();
-               priv.nextViewR = $(priv.options.id+" .flip-container").last().clone();
+               var items = $(priv.options.id+" .flip-container");
+               var s = (priv.options.speed/1000);
+               items.children().css('transition', s + 's');
+               items.css('transition', s + 's');
+               priv.nextViewL = items.first().clone();
+               priv.nextViewR = items.last().clone();
 
 
                priv.nextViewL.css('width', 0 ).children().css('transform', 'rotateY(90deg)');
                priv.nextViewR.css('width', 0 ).children().css('transform', 'rotateY(-90deg)');
 
-               $.each($(priv.options.id+" .flip-container"), function( index, value) {
+               $.each(items, function( index, value) {
                     $(value).css('width', priv.getWidth(index) );
                     $(value).children().css('transform', 'rotateY('+priv.getDegree(index)+'deg)')
                });
@@ -111,10 +157,10 @@
                     }
                     active = true;
                     if($(this).index() > 2){
-                    Gallery.rotateR(function(){active = false});
+                    Gallery.rotate('right',function(){active = false});
                     }
                     if($(this).index() < 2){
-                     Gallery.rotateL(function(){active = false});
+                    Gallery.rotate('left',function(){active = false});
                     }
 
                 });
@@ -130,24 +176,3 @@
     exports.Gallery = Gallery;
 
 }(this, jQuery);
-
-
-jQuery(document).ready( function()
-{
-    console.log('doc rdy');
-
-    // EXAMPLE OF CREATING PLUGIN OBJECTS WITH CUSTOM SETTINGS
-
-    console.log('--------------------------------------------');
-
-    var myGallery1 = new Gallery;
-    myGallery1.init(
-    {
-        /* custom options */
-        id : 'blog-gallery',
-
-    });
-
-    // console.log('--------------------------------------------');
-
-});

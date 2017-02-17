@@ -34,7 +34,7 @@ h1{
 
 
 .flip-container, .front, .back {
-    transition: 0.6s;
+
     transform-style: preserve-3d;
 	width: 320px;
 	height: 420px;
@@ -42,7 +42,7 @@ h1{
 
 /* flip speed goes here */
 .flipper {
-	transition: 0.6s;
+
 	transform-style: preserve-3d;
 
 	position: relative;
@@ -62,6 +62,10 @@ h1{
 	z-index: 2;
 	/* for firefox 31 */
 	transform: rotateY(0deg);
+}
+
+.fast{
+    transition: 0.1s !important;
 }
 
 /* back, initially hidden pane */
